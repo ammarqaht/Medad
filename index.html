@@ -442,11 +442,18 @@ ul { list-style: none; }
    SECTION 8 — HOW IT WORKS
    ============================================================ */
 .how__title { font-size: clamp(2rem, 6vw, 4.5rem); margin-bottom: var(--space-lg); }
+.how {
+  overflow: hidden;
+}
 .timeline {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-md);
+  display: flex;
+  width: max-content;
+  flex-wrap: nowrap;
+  gap: 15vw;
+  padding-right: 5vw;
+  padding-left: 20vw;
   position: relative;
+  align-items: flex-start;
 }
 /* connecting teal line */
 .timeline::before {
@@ -457,7 +464,11 @@ ul { list-style: none; }
   background: var(--teal);
   z-index: 0;
 }
-.step { position: relative; z-index: 1; }
+.step {
+  width: 320px;
+  position: relative;
+  z-index: 1;
+}
 .step__num {
   font-family: var(--font-display);
   font-weight: 900;
@@ -653,7 +664,8 @@ ul { list-style: none; }
 
   .stats__grid  { grid-template-columns: repeat(2, 1fr); }
   .cards-grid   { grid-template-columns: 1fr; }
-  .timeline     { grid-template-columns: 1fr; gap: var(--space-lg); }
+  .timeline { flex-direction: column; width: 100%; padding-right: 0; padding-left: 0; gap: var(--space-lg); }
+  .step { width: 100%; }
   .timeline::before { display: none; }
 
   .footer__cols { grid-template-columns: 1fr; text-align: center; gap: var(--space-lg); }
@@ -848,7 +860,8 @@ ul { list-style: none; }
 <section class="section section--black how" id="how">
   <div class="wrap">
     <h2 class="how__title section-head">كيف يعمل مداد؟</h2>
-    <div class="timeline">
+  </div>
+  <div class="timeline" style="margin-top: 3rem;">
       <div class="step">
         <div class="step__num">01</div>
         <h3 class="step__title">أنشئ برنامجك</h3>
@@ -869,8 +882,8 @@ ul { list-style: none; }
         <h3 class="step__title">تابع النتائج</h3>
         <p class="step__desc">تحليلات وتقارير لحظية لأداء البرنامج بالكامل.</p>
       </div>
+      </div>
     </div>
-  </div>
 </section>
 
 <!-- ============================================================
@@ -1127,11 +1140,30 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
-    /* ---- How-it-works: steps appear one by one ---- */
-    gsap.from(".step", {
-      opacity: 0, y: 50, scale: 0.9, duration: 0.6, ease: "back.out(1.4)",
-      stagger: 0.2,
-      scrollTrigger: { trigger: ".timeline", start: "top 80%" }
+    /* ---- How-it-works: Sticky Horizontal Scroll ---- */
+    let mm = gsap.matchMedia();
+    mm.add("(min-width: 769px)", () => {
+      let timelineEl = document.querySelector(".timeline");
+      
+      gsap.to(".timeline", {
+        // In RTL, positive X moves it to the right, revealing the left side
+        x: () => timelineEl.scrollWidth - window.innerWidth + 150,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".how",
+          pin: true,
+          scrub: 1,
+          start: "top top",
+          end: () => "+=" + (timelineEl.scrollWidth)
+        }
+      });
+    });
+
+    mm.add("(max-width: 768px)", () => {
+      gsap.from(".step", {
+        opacity: 0, y: 50, duration: 0.6, stagger: 0.2, ease: "back.out(1.4)",
+        scrollTrigger: { trigger: ".timeline", start: "top 80%" }
+      });
     });
 
     /* ---- Multi-tenant + CTA fade ups ---- */
