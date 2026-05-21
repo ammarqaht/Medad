@@ -441,28 +441,33 @@ ul { list-style: none; }
 /* ============================================================
    SECTION 8 — HOW IT WORKS
    ============================================================ */
-.how__title { font-size: clamp(2rem, 6vw, 4.5rem); margin-bottom: var(--space-lg); }
+.how__title { font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 2rem; }
 .how {
   overflow: hidden;
+  padding: 0 !important;
 }
 .timeline {
   display: flex;
   width: max-content;
   flex-wrap: nowrap;
-  gap: 15vw;
-  padding-right: 5vw;
-  padding-left: 20vw;
+  gap: 0;
+  padding: 0;
   position: relative;
-  align-items: flex-start;
+  align-items: stretch;
 }
 .step {
-  width: 85vw;
-  max-width: 420px;
+  width: 100vw;
+  min-height: 100vh;
   position: relative;
   z-index: 1;
-  padding: 3rem 2rem;
-  border-radius: 24px;
+  padding: 10vh 10vw;
+  border-radius: 0;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .step:nth-child(odd) {
   background: var(--teal);
@@ -475,24 +480,25 @@ ul { list-style: none; }
 .step__num {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: clamp(6rem, 15vw, 12rem);
   line-height: 1;
   display: inline-block;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
-.step:nth-child(odd) .step__num { color: var(--gold); }
+.step:nth-child(odd) .step__num { color: var(--cream); }
 .step:nth-child(even) .step__num { color: var(--teal); }
+
 .step__title {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 5vw, 4rem);
+  margin-bottom: 1rem;
 }
 .step__desc {
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  color: var(--gray);
-  line-height: 1.8;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  line-height: 1.6;
+  max-width: 800px;
 }
 
 /* ============================================================
@@ -857,12 +863,10 @@ ul { list-style: none; }
 <!-- ============================================================
      SECTION 8 — HOW IT WORKS
      ============================================================ -->
-<section class="section section--black how" id="how">
-  <div class="wrap">
-    <h2 class="how__title section-head">كيف يعمل مداد؟</h2>
-  </div>
-  <div class="timeline" style="margin-top: 3rem;">
+<section class="how" id="how" style="padding: 0; overflow: hidden;">
+  <div class="timeline">
       <div class="step">
+        <h2 class="how__title" style="color: var(--cream);">كيف يعمل مداد؟</h2>
         <div class="step__num">01</div>
         <h3 class="step__title">أنشئ برنامجك</h3>
         <p class="step__desc">سجّل جهتك واختر اسم البرنامج وهويته البصرية.</p>
