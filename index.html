@@ -701,13 +701,9 @@ ul { list-style: none; }
 
   <p class="hero__subtitle">منصة رقمية لإدارة البرامج التدريبية وتسليم المهام وتقييم الأداء</p>
 
-  <div class="hero__actions">
-    <a href="#about" class="btn btn--outline scramble" data-text="اكتشف المزيد">اكتشف المزيد</a>
-    <a href="#cta" class="btn btn--filled scramble" data-text="ابدأ الآن">ابدأ الآن</a>
-  </div>
-
-  <a class="hero__scroll" href="#marquee" aria-label="انتقل للأسفل">
-    <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2">
+  <a class="hero__scroll" href="#marquee" aria-label="انتقل للأسفل" style="display: flex; flex-direction: column; align-items: center; gap: 8px; text-decoration: none; color: var(--teal); opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+    <span style="font-size: 0.95rem; font-weight: 600;">اكتشف فكرة البرنامج بالأسفل</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 4v16M5 13l7 7 7-7"/>
     </svg>
   </a>
