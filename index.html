@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>مداد — منصة إدارة البرامج التدريبية</title>
+<meta name="description" content="مداد منصة رقمية متكاملة لإدارة البرامج التدريبية وتسليم المهام وتقييم الأداء." />
+
+<style>
+/* ============================================================
+   LOCAL FONTS
+   titel/ = display / headings (Thmanyah Serif Display)
+   Font/  = body text (Thmanyah Sans)
+   ============================================================ */
+
+/* ---- Display / heading font ---- */
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("titel/thmanyahserifdisplay-Light.otf") format("opentype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("titel/thmanyahserifdisplay-Regular.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("titel/thmanyahserifdisplay-Medium.otf") format("opentype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("titel/thmanyahserifdisplay-Bold.otf") format("opentype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("titel/thmanyahserifdisplay-Bold.otf") format("opentype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Display";
+  src: url("titel/thmanyahserifdisplay-Black.otf") format("opentype");
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+
+/* ---- Body font ---- */
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("Font/thmanyahsans-Light.otf") format("opentype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("Font/thmanyahsans-Regular.otf") format("opentype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("Font/thmanyahsans-Medium.otf") format("opentype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("Font/thmanyahsans-Bold.otf") format("opentype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("Font/thmanyahsans-Bold.otf") format("opentype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  src: url("Font/thmanyahsans-Black.otf") format("opentype");
+  font-weight: 900; font-style: normal; font-display: swap;
+}
+
+/* ============================================================
+   DESIGN TOKENS — CSS variables for colors & spacing
+   ============================================================ */
+:root {
+  /* Colors */
+  --black:        #000000;
+  --cream:        #f5f2eb;
+  --teal:         #1a8a7d;
+  --gold:         #c9a55a;
+  --gray:         #8a8a82;
+  --gray-dark:    #4a4a44;
+
+  /* Fonts */
+  --font-display: "Thmanyah Display", serif;
+  --font-body:    "Thmanyah Sans", sans-serif;
+  --font-mono:    "Thmanyah Sans", monospace;
+
+  /* Spacing scale */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  2rem;
+  --space-lg:  4rem;
+  --space-xl:  8rem;
+
+  /* Structural */
+  --border-thick: 3px;
+  --border-heavy: 6px;
+  --nav-h: 72px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { overflow-x: hidden; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--black);
+  color: var(--cream);
+  line-height: 1.6;
+  position: relative;
+}
+
+/* Grain / noise overlay applied across the whole page */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+ul { list-style: none; }
+
+::selection { background: var(--teal); color: var(--cream); }
+
+/* ============================================================
+   SHARED LAYOUT HELPERS
+   ============================================================ */
+.section {
+  padding: var(--space-xl) var(--space-md);
+  position: relative;
+  border-bottom: var(--border-heavy) solid var(--black);
+}
+.section--cream { background: var(--cream); color: var(--black); }
+.section--black { background: var(--black); color: var(--cream); }
+
+.wrap { max-width: 1280px; margin: 0 auto; }
+
+/* Big section header with thick teal underline */
+.section-head {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1;
+  display: inline-block;
+  padding-bottom: var(--space-xs);
+  border-bottom: 12px solid var(--teal);
+  margin-bottom: var(--space-lg);
+}
+
+/* code-aesthetic small label */
+.label-code {
+  font-family: var(--font-mono);
+  color: var(--teal);
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.9rem 2rem;
+  display: inline-block;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+  border: var(--border-thick) solid var(--teal);
+}
+.btn--filled  { background: var(--teal); color: var(--cream); }
+.btn--outline { background: transparent; color: var(--cream); border-color: var(--cream); }
+.btn--filled:hover  { transform: scale(1.05); }
+.btn--outline:hover { background: var(--cream); color: var(--black); }
+
+/* ============================================================
+   SECTION 1 — NAVBAR (fixed)
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-md);
+  background: transparent;
+  border-bottom: 1px solid rgba(245,242,235,0.25);
+  transition: background 0.35s ease, border-color 0.35s ease;
+}
+.nav.is-solid {
+  background: var(--black);
+  border-bottom-color: var(--teal);
+}
+.nav__logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: var(--gold);
+  line-height: 1;
+}
+.nav__cta {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.55rem 1.4rem;
+  background: var(--teal);
+  color: var(--cream);
+  border: 2px solid var(--teal);
+  transition: transform 0.2s ease;
+}
+.nav__cta:hover { transform: scale(1.06); }
+
+/* ============================================================
+   SECTION 2 — HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--nav-h) var(--space-md) var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative radiating lines behind the word */
+.hero__rays {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120vw; height: 120vw;
+  max-width: 1400px; max-height: 1400px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.hero__word {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(4rem, 18vw, 14rem);
+  line-height: 1;
+  color: var(--cream);
+  position: relative;
+  z-index: 2;
+  white-space: nowrap;
+  will-change: contents;
+}
+
+.hero__subtitle {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(1rem, 2.2vw, 1.4rem);
+  color: var(--gray);
+  max-width: 640px;
+  margin: var(--space-md) auto var(--space-lg);
+  line-height: 1.8;
+  position: relative;
+  z-index: 2;
+}
+
+.hero__actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* scroll indicator */
+.hero__scroll {
+  position: absolute;
+  bottom: var(--space-md);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+.hero__scroll svg { width: 28px; height: 28px; animation: bounce 1.6s infinite; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(12px); }
+}
+
+/* ============================================================
+   SECTION 3 — MARQUEE TICKER
+   ============================================================ */
+.marquee {
+  background: var(--cream);
+  color: var(--black);
+  border-top: var(--border-thick) solid var(--black);
+  border-bottom: var(--border-thick) solid var(--black);
+  overflow: hidden;
+  padding: 1rem 0;
+  white-space: nowrap;
+}
+.marquee__track {
+  display: inline-flex;
+  will-change: transform;
+}
+.marquee__item {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  padding: 0 1.5rem;
+}
+
+/* ============================================================
+   SECTION 4 — ABOUT / CONCEPT
+   ============================================================ */
+.about { position: relative; overflow: hidden; }
+.about__quote {
+  position: absolute;
+  top: -4vw; right: 2vw;
+  font-family: var(--font-display);
+  font-size: 28vw;
+  line-height: 1;
+  color: rgba(245,242,235,0.05);
+  pointer-events: none;
+  z-index: 0;
+}
+.about__head { font-size: 8vw; }
+.about__body { position: relative; z-index: 2; max-width: 760px; }
+.about__body p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: var(--space-md);
+  color: var(--cream);
+}
+.reveal-text { clip-path: inset(0 100% 0 0); will-change: clip-path; }
+
+/* ============================================================
+   SECTION 5 — STATS
+   ============================================================ */
+.stats__head { font-size: clamp(2.5rem, 7vw, 5rem); }
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+.stat {
+  border-right: 4px solid var(--black); /* RTL: brutalist accent on leading edge */
+  padding: var(--space-sm) var(--space-md);
+}
+.stat__num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1;
+  color: var(--black);
+}
+.stat__label {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--gray-dark);
+  margin-top: var(--space-xs);
+}
+
+/* ============================================================
+   SECTION 6 — FOR STUDENTS
+   ============================================================ */
+.students__title { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: var(--space-lg); }
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: var(--border-thick) solid var(--teal);
+  border-right: var(--border-thick) solid var(--teal);
+}
+.card {
+  background: var(--black);
+  border-left: var(--border-thick) solid var(--teal);
+  border-bottom: var(--border-thick) solid var(--teal);
+  padding: var(--space-md);
+  will-change: transform, opacity;
+}
+.card__icon { font-size: 2.4rem; margin-bottom: var(--space-sm); }
+.card__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: var(--space-xs);
+  color: var(--cream);
+}
+.card__desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--gray);
+  line-height: 1.8;
+}
+
+/* ============================================================
+   SECTION 7 — FOR SUPERVISORS
+   ============================================================ */
+.sup__title { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: var(--space-lg); }
+.sup__item {
+  padding: var(--space-lg) 0;
+  border-bottom: 2px solid var(--black);
+}
+.sup__item:first-of-type { border-top: 2px solid var(--black); }
+.sup__item-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  margin-bottom: var(--space-sm);
+  color: var(--black);
+}
+.sup__item-desc {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--gray-dark);
+  max-width: 760px;
+}
+
+/* ============================================================
+   SECTION 8 — HOW IT WORKS
+   ============================================================ */
+.how__title { font-size: clamp(2rem, 6vw, 4.5rem); margin-bottom: var(--space-lg); }
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  position: relative;
+}
+/* connecting teal line */
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 2.4rem; left: 0; right: 0;
+  height: 2px;
+  background: var(--teal);
+  z-index: 0;
+}
+.step { position: relative; z-index: 1; }
+.step__num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 1;
+  color: var(--teal);
+  background: var(--black);
+  display: inline-block;
+  padding-bottom: 0.3rem;
+}
+.step__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin: var(--space-sm) 0 var(--space-xs);
+  color: var(--cream);
+}
+.step__desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--gray);
+  line-height: 1.8;
+}
+
+/* ============================================================
+   SECTION 9 — MULTI-TENANT
+   ============================================================ */
+.tenant { text-align: center; }
+.tenant__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 10vw, 9rem);
+  line-height: 1;
+  color: var(--black);
+}
+.tenant__sub {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--gray-dark);
+  max-width: 620px;
+  margin: var(--space-md) auto var(--space-lg);
+  line-height: 1.8;
+}
+.tenant__tags {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.6rem 1.4rem;
+  border: var(--border-thick) solid var(--black);
+}
+.tag:nth-child(2) { border-color: var(--teal); color: var(--teal); }
+
+/* ============================================================
+   SECTION 10 — CTA
+   ============================================================ */
+.cta {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.cta__title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(3rem, 10vw, 9rem);
+  line-height: 1;
+  color: var(--cream);
+}
+.cta__sub {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: var(--gray);
+  margin: var(--space-md) 0 var(--space-lg);
+}
+.cta__btn {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.3rem;
+  padding: 1.1rem 3rem;
+  background: var(--teal);
+  color: var(--cream);
+  border: var(--border-thick) solid var(--teal);
+  transition: transform 0.25s ease;
+}
+.cta__btn:hover { transform: scale(1.08); }
+.cta__mail {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-top: var(--space-lg);
+}
+.cta__mail a { color: var(--teal); }
+
+/* ============================================================
+   SECTION 11 — FOOTER
+   ============================================================ */
+.footer {
+  background: var(--black);
+  border-top: 2px solid var(--teal);
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+}
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  align-items: start;
+}
+.footer__logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.9rem;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+.footer__tag, .footer__made {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--gray);
+  line-height: 1.8;
+}
+.footer__links { text-align: center; }
+.footer__links li { margin-bottom: 0.5rem; }
+.footer__links a {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1rem;
+}
+.footer__made { text-align: left; }
+.footer__made span { color: var(--teal); }
+.footer__copy {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--gray-dark);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--gray-dark);
+}
+
+/* link scramble hover affordance */
+.scramble { display: inline-block; }
+
+/* ============================================================
+   MOCKUP CTA — buttons that open the live interface demos
+   ============================================================ */
+.mockup-cta {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: var(--border-thick) solid var(--teal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  text-align: center;
+}
+.mockup-btn {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.1rem, 2.6vw, 1.7rem);
+  padding: 1.1rem 2.8rem;
+  background: var(--teal);
+  color: var(--cream);
+  border: var(--border-thick) solid var(--teal);
+  transition: transform 0.2s ease;
+}
+.mockup-btn:hover { transform: translateY(-4px) scale(1.02); }
+.mockup-cta__note {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--gray);
+  max-width: 540px;
+  line-height: 1.7;
+}
+.section--cream .mockup-cta__note { color: var(--gray-dark); }
+
+/* ============================================================
+   RESPONSIVE — mobile-first breakpoints
+   ============================================================ */
+@media (max-width: 768px) {
+  :root { --space-xl: 4.5rem; --space-lg: 2.5rem; }
+
+  .section { padding: var(--space-xl) var(--space-sm); }
+
+  .stats__grid  { grid-template-columns: repeat(2, 1fr); }
+  .cards-grid   { grid-template-columns: 1fr; }
+  .timeline     { grid-template-columns: 1fr; gap: var(--space-lg); }
+  .timeline::before { display: none; }
+
+  .footer__cols { grid-template-columns: 1fr; text-align: center; gap: var(--space-lg); }
+  .footer__made { text-align: center; }
+
+  .about__quote { font-size: 44vw; top: -2vw; }
+  .nav { padding: 0 var(--space-sm); }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SECTION 1 — NAVBAR
+     ============================================================ -->
+<header class="nav" id="nav">
+  <a href="#hero" class="nav__logo" aria-label="مداد — الصفحة الرئيسية">مـــــداد</a>
+  <a href="#cta" class="nav__cta scramble" data-text="ابدأ الآن">ابدأ الآن</a>
+</header>
+
+<main>
+
+<!-- ============================================================
+     SECTION 2 — HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <!-- decorative radiating lines -->
+  <svg class="hero__rays" viewBox="0 0 100 100" aria-hidden="true">
+    <g stroke="var(--teal)" stroke-width="0.15">
+      <line x1="50" y1="50" x2="50" y2="0"/>
+      <line x1="50" y1="50" x2="100" y2="0"/>
+      <line x1="50" y1="50" x2="100" y2="50"/>
+      <line x1="50" y1="50" x2="100" y2="100"/>
+      <line x1="50" y1="50" x2="50" y2="100"/>
+      <line x1="50" y1="50" x2="0" y2="100"/>
+      <line x1="50" y1="50" x2="0" y2="50"/>
+      <line x1="50" y1="50" x2="0" y2="0"/>
+      <line x1="50" y1="50" x2="75" y2="0"/>
+      <line x1="50" y1="50" x2="25" y2="0"/>
+      <line x1="50" y1="50" x2="75" y2="100"/>
+      <line x1="50" y1="50" x2="25" y2="100"/>
+    </g>
+  </svg>
+
+  <h1 class="hero__word" id="heroWord" aria-label="مداد">مـــــداد</h1>
+
+  <p class="hero__subtitle">منصة رقمية لإدارة البرامج التدريبية وتسليم المهام وتقييم الأداء</p>
+
+  <div class="hero__actions">
+    <a href="#about" class="btn btn--outline scramble" data-text="اكتشف المزيد">اكتشف المزيد</a>
+    <a href="#cta" class="btn btn--filled scramble" data-text="ابدأ الآن">ابدأ الآن</a>
+  </div>
+
+  <a class="hero__scroll" href="#marquee" aria-label="انتقل للأسفل">
+    <svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2">
+      <path d="M12 4v16M5 13l7 7 7-7"/>
+    </svg>
+  </a>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — MARQUEE TICKER
+     ============================================================ -->
+<section class="marquee" id="marquee" aria-hidden="true">
+  <div class="marquee__track" id="marqueeTrack">
+    <!-- repeated by JS -->
+    <span class="marquee__item">إدارة المهام • تقييم الأداء • لوحة المتصدرين • تحليلات ذكية • تسليم رقمي • متابعة المشرفين • نقاط وشارات • تقارير شاملة •&nbsp;</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — ABOUT / CONCEPT
+     ============================================================ -->
+<section class="section section--black about" id="about">
+  <span class="about__quote" aria-hidden="true">”</span>
+  <div class="wrap">
+    <h2 class="section-head about__head reveal-text">الفكرة</h2>
+    <div class="about__body">
+      <p class="reveal-text">مداد منصة رقمية متكاملة صُممت لتحويل إدارة البرامج التدريبية من الفوضى إلى النظام. تتيح لأي جهة — تعليمية أو تطوعية أو مؤسسية — إنشاء برنامجها الخاص بهويته المستقلة وإدارة المهام والتسليمات والتقييمات في مكان واحد.</p>
+      <p class="reveal-text">وُلدت الفكرة من تجربة حقيقية في إدارة برنامج تدريبي يضم عشرات المشاركين، حيث كانت المتابعة اليدوية مرهقة والتقييم غير منظم. مداد يحل هذه المشكلة بالكامل.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — STATS
+     ============================================================ -->
+<section class="section section--cream stats" id="stats">
+  <div class="wrap">
+    <h2 class="section-head stats__head">مداد بالأرقام</h2>
+    <div class="stats__grid">
+      <div class="stat">
+        <div class="stat__num" data-count="70" data-prefix="+">+0</div>
+        <div class="stat__label">مستفيد نشط</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-count="890" data-prefix="+">+0</div>
+        <div class="stat__label">مهمة مُسلّمة</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-count="97" data-suffix="%">0%</div>
+        <div class="stat__label">نسبة القبول</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" data-count="23">0</div>
+        <div class="stat__label">مهمة تدريبية</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — FOR STUDENTS
+     ============================================================ -->
+<section class="section section--black students" id="students">
+  <div class="wrap">
+    <span class="label-code">// للطلاب</span>
+    <h2 class="students__title section-head">كل ما يحتاجه الطالب</h2>
+    <div class="cards-grid">
+      <article class="card">
+        <div class="card__icon">📋</div>
+        <h3 class="card__title">تسليم المهام</h3>
+        <p class="card__desc">استلم المهمة، ارفع الملف أو اكتب الملخص، وسلّم بضغطة واحدة. إعادة التسليم متاحة عند الرفض.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon">📊</div>
+        <h3 class="card__title">متابعة النقاط</h3>
+        <p class="card__desc">شاهد تفصيل درجاتك لكل مهمة ومجموع نقاطك الكلي في مكان واحد.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon">🏆</div>
+        <h3 class="card__title">لوحة المتصدرين</h3>
+        <p class="card__desc">تعرف على ترتيبك بين زملائك وتنافس على المركز الأول بالنقاط.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon">📅</div>
+        <h3 class="card__title">التقويم الذكي</h3>
+        <p class="card__desc">عرض شهري لكل المهام مع ألوان توضح حالة التسليم: مُسلّم، قادم، فائت.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon">💡</div>
+        <h3 class="card__title">صندوق الأفكار</h3>
+        <p class="card__desc">شارك اقتراحاتك وأفكارك مباشرة مع إدارة البرنامج.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon">🔔</div>
+        <h3 class="card__title">إشعارات فورية</h3>
+        <p class="card__desc">تنبيهات تلقائية عند اقتراب المواعيد النهائية أو صدور نتائج التقييم.</p>
+      </article>
+    </div>
+
+    <!-- live demo of the student interface -->
+    <div class="mockup-cta">
+      <a href="mockup/student-mockup.html" class="mockup-btn scramble" data-text="جرّب واجهة الطالب ↗">جرّب واجهة الطالب ↗</a>
+      <p class="mockup-cta__note">نموذج حيّ تفاعلي يعرض كل خدمات الطالب — لوحة التحكم، المهام والتسليم، النقاط، التقويم، ولوحة المتصدرين.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 7 — FOR SUPERVISORS
+     ============================================================ -->
+<section class="section section--cream sup" id="supervisors">
+  <div class="wrap">
+    <span class="label-code">// للمشرفين</span>
+    <h2 class="sup__title section-head">أدوات إشراف متقدمة</h2>
+
+    <div class="sup__item">
+      <h3 class="sup__item-title">إنشاء المهام</h3>
+      <p class="sup__item-desc">أنشئ مهام بتفاصيل كاملة: العنوان، الوصف، الدرجة القصوى، تاريخ التسليم، المسار، طريقة التسليم، وحدد المشرف المسؤول.</p>
+    </div>
+    <div class="sup__item">
+      <h3 class="sup__item-title">مراجعة التسليمات</h3>
+      <p class="sup__item-desc">راجع كل تسليم: اقبل أو ارفض مع ملاحظات، أو أضف درجات يدوياً للطلاب الذين لم يسلموا رقمياً.</p>
+    </div>
+    <div class="sup__item">
+      <h3 class="sup__item-title">تحليلات شاملة</h3>
+      <p class="sup__item-desc">لوحة بيانات متكاملة: نسبة القبول، توزيع الدرجات، أداء المشرفين، خريطة النشاط اليومي، مقارنة المسارات، وأفضل 10 طلاب.</p>
+    </div>
+    <div class="sup__item">
+      <h3 class="sup__item-title">إدارة المحتوى</h3>
+      <p class="sup__item-desc">تحكم كامل بمحتوى الصفحة الرئيسية والأقسام الظاهرة وهوية البرنامج من خلال نظام CMS مدمج.</p>
+    </div>
+
+    <!-- live demo of the supervisor interface -->
+    <div class="mockup-cta">
+      <a href="mockup/supervisor-mockup.html" class="mockup-btn scramble" data-text="جرّب واجهة المشرف ↗">جرّب واجهة المشرف ↗</a>
+      <p class="mockup-cta__note">نموذج حيّ تفاعلي يعرض كل أدوات المشرف — مراجعة التسليمات، إدارة المهام، النقاط العامة، والتحليلات الشاملة.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 8 — HOW IT WORKS
+     ============================================================ -->
+<section class="section section--black how" id="how">
+  <div class="wrap">
+    <h2 class="how__title section-head">كيف يعمل مداد؟</h2>
+    <div class="timeline">
+      <div class="step">
+        <div class="step__num">01</div>
+        <h3 class="step__title">أنشئ برنامجك</h3>
+        <p class="step__desc">سجّل جهتك واختر اسم البرنامج وهويته البصرية.</p>
+      </div>
+      <div class="step">
+        <div class="step__num">02</div>
+        <h3 class="step__title">أضف المهام</h3>
+        <p class="step__desc">حدد المهام التدريبية بتفاصيلها ومواعيدها ومساراتها.</p>
+      </div>
+      <div class="step">
+        <div class="step__num">03</div>
+        <h3 class="step__title">استقبل التسليمات</h3>
+        <p class="step__desc">الطلاب يسلمون والمشرفون يقيّمون في نظام واحد.</p>
+      </div>
+      <div class="step">
+        <div class="step__num">04</div>
+        <h3 class="step__title">تابع النتائج</h3>
+        <p class="step__desc">تحليلات وتقارير لحظية لأداء البرنامج بالكامل.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 9 — MULTI-TENANT
+     ============================================================ -->
+<section class="section section--cream tenant" id="tenant">
+  <div class="wrap">
+    <h2 class="tenant__title">برنامجك، هويتك</h2>
+    <p class="tenant__sub">كل جهة تحصل على برنامج مستقل باسمها وشعارها وألوانها — عزل كامل للبيانات.</p>
+    <div class="tenant__tags">
+      <span class="tag">شعار مخصص</span>
+      <span class="tag">ألوان مخصصة</span>
+      <span class="tag">رابط مخصص</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 10 — CTA
+     ============================================================ -->
+<section class="section section--black cta" id="cta">
+  <h2 class="cta__title">جاهز تبدأ؟</h2>
+  <p class="cta__sub">حوّل برنامجك التدريبي إلى تجربة رقمية متكاملة</p>
+  <a href="https://wa.me/966535451898" target="_blank" rel="noopener" class="cta__btn scramble" data-text="تواصل معنا">تواصل معنا</a>
+  <p class="cta__mail">أو أرسل إلى: <a href="mailto:ammarqaht@gmail.com">ammarqaht@gmail.com</a></p>
+</section>
+
+</main>
+
+<!-- ============================================================
+     SECTION 11 — FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer__cols">
+    <div class="footer__right">
+      <div class="footer__logo" aria-label="مداد">مـــــداد</div>
+      <p class="footer__tag">منصة رقمية لإدارة البرامج التدريبية وتسليم المهام وتقييم الأداء.</p>
+    </div>
+    <ul class="footer__links">
+      <li><a href="#hero" class="scramble" data-text="الرئيسية">الرئيسية</a></li>
+      <li><a href="#students" class="scramble" data-text="للطلاب">للطلاب</a></li>
+      <li><a href="#supervisors" class="scramble" data-text="للمشرفين">للمشرفين</a></li>
+    </ul>
+    <p class="footer__made">صُنع بواسطة عمار <span>♥</span></p>
+  </div>
+  <p class="footer__copy">© 2026 مداد — جميع الحقوق محفوظة</p>
+</footer>
+
+<!-- ============================================================
+     CDN LIBRARIES
+     ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<script>
+/* ============================================================
+   MIDAD — interaction & animation logic
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", function () {
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --------------------------------------------------------
+     LENIS — smooth scroll, integrated with GSAP ScrollTrigger
+     -------------------------------------------------------- */
+  var lenis;
+  if (window.Lenis && !reduceMotion) {
+    lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    lenis.on("scroll", function () {
+      if (window.ScrollTrigger) ScrollTrigger.update();
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+
+  /* --------------------------------------------------------
+     NAVBAR — solid background on scroll
+     -------------------------------------------------------- */
+  var nav = document.getElementById("nav");
+  function onNavScroll() {
+    if (window.scrollY > 40) nav.classList.add("is-solid");
+    else nav.classList.remove("is-solid");
+  }
+  onNavScroll();
+  window.addEventListener("scroll", onNavScroll, { passive: true });
+
+  /* --------------------------------------------------------
+     MARQUEE — duplicate content so the loop has no gap
+     -------------------------------------------------------- */
+  var marqueeTrack = document.getElementById("marqueeTrack");
+  if (marqueeTrack) {
+    var original = marqueeTrack.querySelector(".marquee__item");
+    for (var i = 0; i < 5; i++) {
+      marqueeTrack.appendChild(original.cloneNode(true));
+    }
+  }
+
+  /* --------------------------------------------------------
+     LINK SCRAMBLE / GLITCH hover effect
+     -------------------------------------------------------- */
+  var glyphs = "ابتثجحخدذرزسشصضطظعغفقكلمنهوي0123456789";
+  function scrambleHover(el) {
+    var finalText = el.getAttribute("data-text") || el.textContent;
+    var frame = 0;
+    var interval;
+    el.addEventListener("mouseenter", function () {
+      clearInterval(interval);
+      frame = 0;
+      interval = setInterval(function () {
+        var out = "";
+        for (var i = 0; i < finalText.length; i++) {
+          if (i < frame / 2) {
+            out += finalText[i];
+          } else if (finalText[i] === " ") {
+            out += " ";
+          } else {
+            out += glyphs[Math.floor(Math.random() * glyphs.length)];
+          }
+        }
+        el.textContent = out;
+        frame++;
+        if (frame / 2 >= finalText.length) {
+          clearInterval(interval);
+          el.textContent = finalText;
+        }
+      }, 35);
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".scramble"), scrambleHover);
+
+  /* --------------------------------------------------------
+     HERO WORD — auto scramble (runs on load, no hover needed)
+     Letters randomize quickly then settle into "مـــــداد".
+     -------------------------------------------------------- */
+  function runHeroScramble() {
+    var el = document.getElementById("heroWord");
+    if (!el) return;
+    var finalText = "مـــــداد";
+    var holdFrames  = 6;   /* pure-scramble frames before reveal starts */
+    var revealEvery = 3;   /* frames spent settling each character       */
+    var frame = 0;
+    var iv = setInterval(function () {
+      var revealed = Math.floor((frame - holdFrames) / revealEvery);
+      var out = "";
+      for (var i = 0; i < finalText.length; i++) {
+        if (i < revealed) out += finalText[i];
+        else out += glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+      el.textContent = out;
+      frame++;
+      if (revealed >= finalText.length) {
+        clearInterval(iv);
+        el.textContent = finalText;
+      }
+    }, 45);
+  }
+
+  /* --------------------------------------------------------
+     GSAP ANIMATIONS — all set up here
+     -------------------------------------------------------- */
+  function initAnimations() {
+    if (!window.gsap) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ---- Hero: auto scramble/glitch reveal of "مـــــداد" ----
+       Runs immediately on load — no hover needed.               */
+    runHeroScramble();
+
+    /* hero subtitle + actions fade up after the scramble settles */
+    gsap.from(".hero__subtitle, .hero__actions", {
+      opacity: 0, y: 30, duration: 0.8, stagger: 0.15,
+      delay: 1.6
+    });
+
+    /* ---- Marquee: continuous infinite scroll (RTL-aware) ----
+       Track moves so content flows; xPercent loop keeps it seamless. */
+    var track = document.getElementById("marqueeTrack");
+    if (track) {
+      var firstItem = track.querySelector(".marquee__item");
+      var itemWidth = firstItem.offsetWidth;
+      gsap.to(track, {
+        x: itemWidth,           /* +x scrolls left-to-right visually */
+        duration: 18,
+        ease: "none",
+        repeat: -1,
+        modifiers: {
+          x: function (x) {
+            return (parseFloat(x) % itemWidth) + "px";
+          }
+        }
+      });
+    }
+
+    /* ---- Section headers + text: clip-path wipe from the right ---- */
+    gsap.utils.toArray(".reveal-text").forEach(function (el) {
+      gsap.to(el, {
+        clipPath: "inset(0 0% 0 0)",
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 85%" }
+      });
+    });
+
+    /* ---- Section headers (non-reveal-text) simple wipe-in ---- */
+    gsap.utils.toArray(".section-head:not(.reveal-text)").forEach(function (el) {
+      gsap.from(el, {
+        opacity: 0, x: 60, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 88%" }
+      });
+    });
+
+    /* ---- Stats: count-up from 0 when scrolled into view ---- */
+    gsap.utils.toArray(".stat__num").forEach(function (el) {
+      var end = parseInt(el.getAttribute("data-count"), 10);
+      var prefix = el.getAttribute("data-prefix") || "";
+      var suffix = el.getAttribute("data-suffix") || "";
+      var obj = { val: 0 };
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 88%",
+        once: true,
+        onEnter: function () {
+          gsap.to(obj, {
+            val: end,
+            duration: 1.8,
+            ease: "power2.out",
+            onUpdate: function () {
+              el.textContent = prefix + Math.round(obj.val) + suffix;
+            }
+          });
+        }
+      });
+    });
+
+    /* ---- Student feature cards: slide up with 0.15s stagger ---- */
+    gsap.from(".card", {
+      opacity: 0, y: 60, duration: 0.6, ease: "power3.out",
+      stagger: 0.15,
+      scrollTrigger: { trigger: ".cards-grid", start: "top 80%" }
+    });
+
+    /* ---- Supervisor items: wipe in stacked ---- */
+    gsap.utils.toArray(".sup__item").forEach(function (el) {
+      gsap.from(el, {
+        opacity: 0, y: 40, duration: 0.7, ease: "power3.out",
+        scrollTrigger: { trigger: el, start: "top 85%" }
+      });
+    });
+
+    /* ---- How-it-works: steps appear one by one ---- */
+    gsap.from(".step", {
+      opacity: 0, y: 50, scale: 0.9, duration: 0.6, ease: "back.out(1.4)",
+      stagger: 0.2,
+      scrollTrigger: { trigger: ".timeline", start: "top 80%" }
+    });
+
+    /* ---- Multi-tenant + CTA fade ups ---- */
+    gsap.from(".tenant__title, .tenant__sub, .tenant__tags", {
+      opacity: 0, y: 40, duration: 0.8, stagger: 0.12, ease: "power3.out",
+      scrollTrigger: { trigger: ".tenant", start: "top 75%" }
+    });
+    gsap.from(".cta__title, .cta__sub, .cta__btn, .cta__mail", {
+      opacity: 0, y: 40, duration: 0.8, stagger: 0.12, ease: "power3.out",
+      scrollTrigger: { trigger: ".cta", start: "top 70%" }
+    });
+
+    /* ---- Parallax: decorative hero rays + about quote mark ---- */
+    gsap.to(".hero__rays", {
+      rotation: 18, scale: 1.15, ease: "none",
+      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+    });
+    gsap.to(".about__quote", {
+      y: -120, ease: "none",
+      scrollTrigger: { trigger: ".about", start: "top bottom", end: "bottom top", scrub: true }
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  /* reduced-motion: just show everything in final state */
+  if (reduceMotion) {
+    document.querySelectorAll(".reveal-text").forEach(function (el) {
+      el.style.clipPath = "inset(0 0 0 0)";
+    });
+    document.querySelectorAll(".stat__num").forEach(function (el) {
+      var prefix = el.getAttribute("data-prefix") || "";
+      var suffix = el.getAttribute("data-suffix") || "";
+      el.textContent = prefix + el.getAttribute("data-count") + suffix;
+    });
+  } else {
+    initAnimations();
+  }
+});
+</script>
+
+</body>
+</html>
