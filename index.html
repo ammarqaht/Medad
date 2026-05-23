@@ -1064,14 +1064,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!window.gsap) return;
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ---- Hero: auto scramble/glitch reveal of "مـــــداد" ----
-       Runs immediately on load — no hover needed.               */
-    runHeroScramble();
+    /* ---- Hero: calm cinematic reveal of "مـــــداد" ----
+       Blur fade-in + slight scale-down (1.05 → 1) with ease-out.
+       Replaces the previous aggressive scramble/glitch effect.   */
+    gsap.from(".hero__word", {
+      opacity: 0,
+      scale: 1.05,
+      filter: "blur(24px)",
+      duration: 1.6,
+      ease: "power3.out"
+    });
 
-    /* hero subtitle + actions fade up after the scramble settles */
+    /* hero subtitle fades up gently after the word fully settles */
     gsap.from(".hero__subtitle, .hero__actions", {
-      opacity: 0, y: 30, duration: 0.8, stagger: 0.15,
-      delay: 1.6
+      opacity: 0, y: 24, duration: 1.0, stagger: 0.15,
+      ease: "power2.out",
+      delay: 2.0
     });
 
     /* ---- Marquee: continuous infinite scroll (RTL-aware) ----
